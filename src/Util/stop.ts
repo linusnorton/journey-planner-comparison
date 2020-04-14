@@ -1,7 +1,7 @@
-import { stopsByCode } from "../Data/stops";
+import { stopsByCrs, stopsByNlc } from "../Data/stops";
 
 export function stopName(stop: Stop): string {
-  return stop.crsCode ? stopsByCode[stop.crsCode].name : stopsByCode[stop.nlcCode!].name;
+  return stop.crsCode ? stopsByCrs[stop.crsCode].name : stopsByNlc[stop.nlcCode!].name;
 }
 
 interface Stop {

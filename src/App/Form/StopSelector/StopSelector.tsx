@@ -29,7 +29,7 @@ export function StopSelector({ id, stops, onChange }: StopSelectorProps) {
   const onSuggestionsFetchRequested = ({ value } : SuggestionsFetchRequestedParams) => {
     const inputValue = value.trim().toUpperCase();
     const results = inputValue.length < 3 ? [] : stops.filter(stop =>
-      stop.code === inputValue || stop.name.toUpperCase().includes(inputValue)
+      stop.crs === inputValue || stop.name.toUpperCase().includes(inputValue)
     );
 
     results.sort((a, b) => a.name.length - b.name.length);

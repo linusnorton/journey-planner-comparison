@@ -21,7 +21,7 @@ export function JourneyResult({ journey }: JourneyResultProps) {
         <div className="col-3">{stopName(fLeg.dptStation)}</div>
         <div className="col-1">{toTimeString(journey.departureDateTime)}</div>
         <div className="col-1">{toTimeString(journey.arrivalDateTime)}</div>
-        <div className="col-1">{journey.tisSegmentList.length}</div>
+        <div className="col-1">{journey.tisSegmentList.length - 1}</div>
         <div className="col-3">{stopName(lLeg.arrStation)}</div>
         <div className="col-2">£{price}</div>
       </div>

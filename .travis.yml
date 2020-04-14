@@ -6,7 +6,7 @@ node_js:
 install: npm install
 script: npm run build
 deploy:
-  local_dir: build
+  local_dir: build/
   provider: pages
   skip_cleanup: true
   github_token: $GITHUB_TOKEN

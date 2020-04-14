@@ -12,10 +12,7 @@ export function JourneyResult({ journey }: JourneyResultProps) {
     setOpen(!open);
   };
 
-  const details = open && <div className="row my-1">
-    {journey.tisSegmentList.map((l, i) => <LegResult index={i} key={i} leg={l}/>)}
-  </div>;
-
+  const details = open && journey.tisSegmentList.map((l, i) => <LegResult index={i} key={i} leg={l}/>);
   const price = journey.journeyFareList.find(f => f.cheapest)!.farePrice.toFixed(2);
 
   return (

@@ -5,10 +5,10 @@ import { stopName } from "../../../../../Util/stop";
 export function StopTimeResult({ stopTime }: StopTimeResultProps) {
   return (
     <div className="row">
-      <div className="col-2">
+      <div className="col-1">
         {stopTime.publicArrivalTime ? toTimeString(stopTime.publicArrivalTime) : "--:--" }
       </div>
-      <div className="col-2">
+      <div className="col-1">
         {stopTime.publicDepartureTime ? toTimeString(stopTime.publicDepartureTime) : "--:--" }
       </div>
       <div className="col-8">

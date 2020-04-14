@@ -2,7 +2,6 @@ import * as React from "react";
 import { Journey, JourneyResult } from "./JourneyResult/JourneyResult";
 
 import "./Results.css";
-import { stopName } from "../../Util/stop";
 
 export function Results({ results, loading }: FormResultsProps) {
   return (

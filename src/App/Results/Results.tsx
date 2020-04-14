@@ -5,15 +5,15 @@ import "./Results.css";
 
 export function Results({ results, loading }: FormResultsProps) {
   return (
-    <div className="col-6 p-0">
+    <>
       {
         loading
           ? <p>Loading</p>
           : !results || results.outboundJourneyList.length === 0
             ? <p>No results</p>
-            : renderResults(results.outboundJourneyList)
+            : renderResults(results.outboundJourneyList.slice(0, 8))
       }
-    </div>
+    </>
   );
 }
 

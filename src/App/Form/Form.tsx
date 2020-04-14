@@ -7,7 +7,10 @@ import "./Form.css";
 export function Form({ onSubmit, stops }: FormInputProps) {
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
-  const [date, setDate] = useState(new Date());
+  const defaultDate = new Date();
+  defaultDate.setMonth(defaultDate.getMonth() + 1);
+
+  const [date, setDate] = useState(defaultDate);
   const [time, setTime] = useState("14:00");
 
   const onChangeOrigin = (value: string) => {

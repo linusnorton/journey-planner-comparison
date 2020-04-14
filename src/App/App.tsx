@@ -39,8 +39,14 @@ export function App() {
       <div className="container">
         <Form onSubmit={onSubmit} stops={stops}/>
         <div className="results row">
-          <Results loading={loading1} results={results1}/>
-          <Results loading={loading2} results={results2}/>
+          <div className="col-6 pl-0">
+            <h2>cTrip</h2>
+            <Results loading={loading1} results={results1}/>
+          </div>
+          <div className="col-6 pr-0">
+            <h2>Southern</h2>
+            <Results loading={loading2} results={results2}/>
+          </div>
           {error}
         </div>
       </div>
@@ -61,7 +67,7 @@ async function fetchOtrl(form: FormData) {
     "doRealTime": false,
     "filterFares": true,
     "keepAllZoneFares": false,
-    "numJourneys": 5,
+    "numJourneys": 8,
     "openReturn": false,
     "origin": form.origin,
     "outward": { "arriveDepart": "Depart", "rangeEnd": form.date + "T23:59:59", "rangeStart": form.date + "T" + form.time + ":00"},
@@ -121,8 +127,8 @@ function otrlDateTime(dateTime: string) {
 
 function convertLeg(leg: any, links: any): Leg {
   return {
-    departureDateTime: otrlDateTime(leg.origin[0].time.scheduledTime),
-    arrivalDateTime: otrlDateTime(leg.destination[0].time.scheduledTime),
+    departureDateTime: leg.fixed ? "" : otrlDateTime(leg.origin[0].time.scheduledTime),
+    arrivalDateTime: leg.fixed ? "" : otrlDateTime(leg.destination[0].time.scheduledTime),
     dptStation: {
       nlcCode: links[leg.origin[0].station].nlc,
       crsCode: links[leg.origin[0].station].crs,
@@ -131,8 +137,8 @@ function convertLeg(leg: any, links: any): Leg {
       nlcCode: links[leg.destination[0].station].nlc,
       crsCode: links[leg.destination[0].station].crs,
     },
-    segmentType: leg.fixed ? 0 : 1,
-    durationMinutes: 0,
+    segmentType: leg.fixed ? 1 : 0,
+    durationMinutes: leg.transferTime,
     tisCallingPointList: []
   }
 }

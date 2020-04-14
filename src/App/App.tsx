@@ -39,14 +39,15 @@ export function App() {
       setLoading(false);
       setError(e);
     }
+
   }
 
   return (
     <main>
       <div className="container">
-        <Form onSubmit={onSubmit} stops={stops} />
-        <Results loading={loading} results={results} />
-        { error }
+        <Form onSubmit={onSubmit} stops={stops}/>
+        <Results loading={loading} results={results}/>
+        {error}
       </div>
     </main>
   );

@@ -1,13 +1,13 @@
 import * as React from "react";
+import { useState } from "react";
 import { StopTime, StopTimeResult } from "./StopTimeResult/StopTimeResult";
 import { stopName } from "../../../../Util/stop";
-import { toMins, toTimeString } from "../../../../Util/time";
-import { useState } from "react";
+import { toTimeString } from "../../../../Util/time";
 
 export function LegResult({ index, leg }: LegResultProps) {
   const [open, setOpen] = useState(false);
 
-  const transferText = leg.segmentType !== 0 ? "(" + toMins(leg.durationMinutes) + " transfer)": "";
+  const transferText = leg.segmentType !== 0 ? "(" + leg.durationMinutes + " mins transfer)": "";
   const departureTime = leg.departureDateTime && "(" + toTimeString(leg.departureDateTime) + ")";
   const arrivalTime = leg.arrivalDateTime && "(" + toTimeString(leg.arrivalDateTime) + ")";
   const stops = open && leg.tisCallingPointList && <div className="row pl-4">

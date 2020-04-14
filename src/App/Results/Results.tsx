@@ -22,7 +22,7 @@ export function Results({ results, loading }: FormResultsProps) {
 function renderResults(journeys: Journey[]) {
   return (
     <div className="container p-0">
-      <div className="row my-1">
+      <div className="row font-weight-bold my-1">
         <div className="col-3 overflow-hidden">Origin</div>
         <div className="col-1">Dep</div>
         <div className="col-1">Arr</div>

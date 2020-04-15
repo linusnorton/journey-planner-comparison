@@ -9,7 +9,7 @@ export function Results({ results, loading }: FormResultsProps) {
       {
         loading
           ? <p>Loading</p>
-          : !results || results.outboundJourneyList.length === 0
+          : !results || !results.outboundJourneyList || results.outboundJourneyList.length === 0
             ? <p>No results</p>
             : renderResults(results.outboundJourneyList.slice(0, 8))
       }

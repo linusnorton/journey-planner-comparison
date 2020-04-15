@@ -55,7 +55,7 @@ export function App() {
 }
 
 async function fetchOtrl(form: FormData) {
-  const url = "https://api.southernrailway.com/jp/journey-plan";
+  const url = "https://cors-anywhere.herokuapp.com/https://api.southernrailway.com/jp/journey-plan";
   const headers = {
     "x-access-token": "otrl|a6af56be1691ac2929898c9f68c4b49a0a2d930849770dba976be5d792a"
   };
@@ -95,7 +95,7 @@ async function fetchTrip(form: FormData) {
     "returnDate": "",
     "showRouteingDetail": false
   }
-  const url = "http://apiproxy-fws.ctripqa.com/apiproxy/train/tisuk/fare/fare/tisSearch";
+  const url = "https://cors-anywhere.herokuapp.com/http://apiproxy-fws.ctripqa.com/apiproxy/train/tisuk/fare/fare/tisSearch";
   const response = await axios.post(url, data);
 
   return response.data;

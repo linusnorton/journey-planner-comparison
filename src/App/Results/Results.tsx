@@ -3,17 +3,17 @@ import { Journey, JourneyResult } from "./JourneyResult/JourneyResult";
 
 import "./Results.css";
 
-export function Results({ results, loading }: FormResultsProps) {
+export function Results({ results, loading, error }: FormResultsProps) {
+  const errorMessage = error && <p>Error</p>;
+  const loadingMessage = loading && <p>Loading</p>;
+  const journeys = !results || !results.outboundJourneyList || results.outboundJourneyList.length === 0
+    ? <p>No results</p>
+    : renderResults(results.outboundJourneyList.slice(0, 8));
+
+  const content = errorMessage || loadingMessage || journeys;
+
   return (
-    <>
-      {
-        loading
-          ? <p>Loading</p>
-          : !results || !results.outboundJourneyList || results.outboundJourneyList.length === 0
-            ? <p>No results</p>
-            : renderResults(results.outboundJourneyList.slice(0, 8))
-      }
-    </>
+    <>{content}</>
   );
 }
 
@@ -39,5 +39,6 @@ export interface FormResultsProps {
   results?: {
     outboundJourneyList: Journey[]
   },
-  loading: boolean
+  loading: boolean,
+  error: boolean
 }

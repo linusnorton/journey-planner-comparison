@@ -15,6 +15,186 @@ export interface Stop {
 
 export const stops: Stop[] = [
   {
+    "code": "1072",
+    "name": "London",
+    "crs": ""
+  },
+  {
+    "code": "0410",
+    "name": "Bedford Stations",
+    "crs": ""
+  },
+  {
+    "code": "0418",
+    "name": "Birmingham",
+    "crs": ""
+  },
+  {
+    "code": "1780",
+    "name": "Bootle (Merseyside)",
+    "crs": ""
+  },
+  {
+    "code": "0424",
+    "name": "Bradford (West Yorkshire)",
+    "crs": ""
+  },
+  {
+    "code": "0428",
+    "name": "Canterbury",
+    "crs": ""
+  },
+  {
+    "code": "0258",
+    "name": "Catford Stations",
+  "crs": ""
+  },
+  {
+    "code": "0254",
+    "name": "Colchester Stations",
+  "crs": ""
+  },
+  {
+    "code": "0449",
+    "name": "Croydon",
+    "crs": ""
+  },
+  {
+    "code": "0429",
+    "name": "Dorchester",
+    "crs": ""
+  },
+  {
+    "code": "0416",
+    "name": "Dorking Stations",
+    "crs": ""
+  },
+  {
+    "code": "0259",
+    "name": "Edenbridge Stations",
+    "crs": ""
+  },
+  {
+    "code": "0263",
+    "name": "Enfield",
+    "crs": ""
+  },
+  {
+    "code": "0431",
+    "name": "Falkirk",
+  "crs": ""
+  },
+  {
+    "code": "0260",
+    "name": "Farnborough",
+  "crs": ""
+  },
+  {
+    "code": "0432",
+    "name": "Folkestone",
+    "crs": ""
+  },
+  {
+    "code": "0433",
+    "name": "Glasgow",
+    "crs": ""
+  },
+  {
+    "code": "0404",
+    "name": "Helensburgh",
+    "crs": ""
+  },
+  {
+    "code": "0413",
+    "name": "Hertford",
+    "crs": ""
+  },
+  {
+    "code": "0435",
+    "name": "Liverpool",
+    "crs": ""
+  },
+  {
+    "code": "0437",
+    "name": "Maidstone",
+    "crs": ""
+  },
+  {
+    "code": "0438",
+    "name": "Manchester",
+    "crs": ""
+  },
+  {
+    "code": "0441",
+    "name": "Newark",
+    "crs": ""
+  },
+  {
+    "code": "0262",
+    "name": "Penge",
+    "crs": ""
+  },
+  {
+    "code": "0268",
+    "name": "Pontefract",
+    "crs": ""
+  },
+  {
+    "code": "0440",
+    "name": "Portsmouth",
+    "crs": ""
+  },
+  {
+    "code": "0403",
+    "name": "Reading Stations",
+    "crs": ""
+  },
+  {
+    "code": "0411",
+    "name": "Southend",
+    "crs": ""
+  },
+  {
+    "code": "0271",
+    "name": "Thorne",
+    "crs": ""
+  },
+  {
+    "code": "7468",
+    "name": "Tilbury",
+  "crs": ""
+  },
+  {
+    "code": "0443",
+    "name": "Tyndrum",
+    "crs": ""
+  },
+  {
+    "code": "0265",
+    "name": "West Hampstead",
+    "crs": ""
+  },
+  {
+    "code": "0444",
+    "name": "Wakefield",
+    "crs": ""
+  },
+  {
+    "code": "0445",
+    "name": "Warrington",
+    "crs": ""
+  },
+  {
+    "code": "0446",
+    "name": "Wigan",
+    "crs": ""
+  },
+  {
+    "code": "0447",
+    "name": "Worcester",
+   "crs": ""
+  },
+  {
     "code": "0027",
     "name": "Trvcard 1",
     "crs": ""

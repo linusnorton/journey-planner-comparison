@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { SetStateAction, useState, Dispatch } from 'react';
 import './App.css';
 import { Form, FormData } from "./Form/Form";
 import axios from "axios";
@@ -11,26 +11,26 @@ export function App() {
   const [results2, setResults2] = useState();
   const [loading1, setLoading1] = useState(false);
   const [loading2, setLoading2] = useState(false);
-  const [error, setError] = useState("");
+  const [error1, setError1] = useState(false);
+  const [error2, setError2] = useState(false);
 
-  const onSubmit = async (form: FormData) => {
-    setLoading1(true);
-    setLoading2(true);
-    setError("");
+  const getResults = async (query: Promise<any>, setLoading: Setter<boolean>, setError: Setter<boolean>, setResults: Setter<any>) => {
+    setLoading(true);
+    setError(false);
 
     try {
-      await Promise.all([
-        fetchTrip(form)
-          .then(results => setResults1(results))
-          .then(() => setLoading1(false)),
-        fetchOtrl(form)
-          .then(results => setResults2(results))
-          .then(() => setLoading2(false))
-      ]);
+      const results = await query;
+      setResults(results);
+      setLoading(false);
     } catch (e) {
-      console.log(e);
-      setError("Could not load journeys");
+      console.error(e);
+      setError(true)
     }
+  }
+
+  const onSubmit = (form: FormData) => {
+    getResults(fetchTrip(form), setLoading1, setError1, setResults1);
+    getResults(fetchOtrl(form), setLoading2, setError2, setResults2);
   }
 
   return (
@@ -40,13 +40,12 @@ export function App() {
         <div className="results row">
           <div className="col-6 pl-0">
             <h2>cTrip</h2>
-            <Results loading={loading1} results={results1}/>
+            <Results loading={loading1} results={results1} error={error1}/>
           </div>
           <div className="col-6 pr-0">
             <h2>Southern</h2>
-            <Results loading={loading2} results={results2}/>
+            <Results loading={loading2} results={results2} error={error2}/>
           </div>
-          {error}
         </div>
       </div>
     </main>
@@ -100,3 +99,4 @@ async function fetchTrip(form: FormData) {
   return response.data;
 }
 
+type Setter<T> = Dispatch<SetStateAction<T>>;

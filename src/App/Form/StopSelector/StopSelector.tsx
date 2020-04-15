@@ -1,7 +1,7 @@
 import React, { FormEvent, useState } from "react";
 import './StopSelector.css';
 import Autosuggest, {
-  ChangeEvent,
+  ChangeEvent, SuggestionHighlightedParams,
   SuggestionSelectedEventData,
   SuggestionsFetchRequestedParams
 } from "react-autosuggest";
@@ -10,8 +10,10 @@ import { Stop } from "../../../Data/stops";
 export function StopSelector({ id, stops, onChange }: StopSelectorProps) {
   const [suggestions, setSuggestions] = useState(stops);
   const [inputValue, setInputValue] = useState("");
+  const [highlighted, setHighlighted] = useState();
 
   const onSelectedChange = (event: FormEvent<any>, selected: SuggestionSelectedEventData<Stop>) => {
+    setHighlighted(undefined);
     onChange(selected.suggestion.code);
   };
 
@@ -20,11 +22,15 @@ export function StopSelector({ id, stops, onChange }: StopSelectorProps) {
   };
 
   const onBlur = (event: React.FocusEvent<any>, params?: Autosuggest.BlurEvent<Stop>) => {
-    if (params && params.highlightedSuggestion) {
-      onChange(params.highlightedSuggestion.code);
-      setInputValue(params.highlightedSuggestion.name);
+    if (highlighted) {
+      onChange(highlighted.code);
+      setInputValue(highlighted.name);
     }
   };
+
+  const onHighlighted = (params: SuggestionHighlightedParams) => {
+    setHighlighted(params.suggestion);
+  }
 
   const onSuggestionsFetchRequested = ({ value } : SuggestionsFetchRequestedParams) => {
     const inputValue = value.trim().toUpperCase();
@@ -44,13 +50,14 @@ export function StopSelector({ id, stops, onChange }: StopSelectorProps) {
   return (
     <Autosuggest
       id={id}
-      highlightFirstSuggestion={true}
+      highlightFirstSuggestion={false}
       suggestions={suggestions}
       getSuggestionValue={getSuggestionValue}
       renderSuggestion={renderSuggestion}
       onSuggestionsFetchRequested={onSuggestionsFetchRequested}
       onSuggestionsClearRequested={onSuggestionsClearRequested}
       onSuggestionSelected={onSelectedChange}
+      onSuggestionHighlighted={onHighlighted}
       inputProps={{
         value: inputValue,
         id: id,

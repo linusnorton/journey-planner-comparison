@@ -14,20 +14,6 @@ export function App() {
   const [error1, setError1] = useState(false);
   const [error2, setError2] = useState(false);
 
-  const getResults = async (query: Promise<any>, setLoading: Setter<boolean>, setError: Setter<boolean>, setResults: Setter<any>) => {
-    setLoading(true);
-    setError(false);
-
-    try {
-      const results = await query;
-      setResults(results);
-      setLoading(false);
-    } catch (e) {
-      console.error(e);
-      setError(true)
-    }
-  }
-
   const onSubmit = (form: FormData) => {
     getResults(fetchTrip(form), setLoading1, setError1, setResults1);
     getResults(fetchOtrl(form), setLoading2, setError2, setResults2);
@@ -50,6 +36,20 @@ export function App() {
       </div>
     </main>
   );
+}
+
+async function getResults(query: Promise<any>, setLoading: Setter<boolean>, setError: Setter<boolean>, setResults: Setter<any>) {
+  setLoading(true);
+  setError(false);
+
+  try {
+    const results = await query;
+    setResults(results);
+    setLoading(false);
+  } catch (e) {
+    console.error(e);
+    setError(true)
+  }
 }
 
 async function fetchOtrl(form: FormData) {

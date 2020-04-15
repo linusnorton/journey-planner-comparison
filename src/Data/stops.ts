@@ -47,7 +47,7 @@ export const stops: Stop[] = [
   {
     "code": "0258",
     "name": "Catford Stations",
-  "crs": ""
+    "crs": ""
   },
   {
     "code": "0254",
@@ -82,12 +82,12 @@ export const stops: Stop[] = [
   {
     "code": "0431",
     "name": "Falkirk",
-  "crs": ""
+    "crs": ""
   },
   {
     "code": "0260",
     "name": "Farnborough",
-  "crs": ""
+    "crs": ""
   },
   {
     "code": "0432",
@@ -162,7 +162,7 @@ export const stops: Stop[] = [
   {
     "code": "7468",
     "name": "Tilbury",
-  "crs": ""
+    "crs": ""
   },
   {
     "code": "0443",
@@ -192,7 +192,7 @@ export const stops: Stop[] = [
   {
     "code": "0447",
     "name": "Worcester",
-   "crs": ""
+    "crs": ""
   },
   {
     "code": "0027",

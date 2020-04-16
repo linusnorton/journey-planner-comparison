@@ -13,7 +13,7 @@ export function JourneyResult({ journey }: JourneyResultProps) {
   };
 
   const details = open && journey.tisSegmentList.map((l, i) => <LegResult index={i} key={i} leg={l}/>);
-  const price = journey.journeyFareList.find(f => f.cheapest)!.farePrice.toFixed(2);
+  const price = journey.journeyFareList ? journey.journeyFareList.find(f => f.cheapest)!.farePrice.toFixed(2) : 0.00;
 
   return (
     <>

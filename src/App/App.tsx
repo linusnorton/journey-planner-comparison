@@ -93,8 +93,13 @@ async function fetchTrip(form: FormData) {
     "returnDate": "",
     "showRouteingDetail": false
   }
+  // const url = "https://cors-anywhere.herokuapp.com/http://apiproxy-fws.ctripqa.com/apiproxy/train/tisuk/fare/fare/journeySearch";
   const url = "https://cors-anywhere.herokuapp.com/http://apiproxy-fws.ctripqa.com/apiproxy/train/tisuk/fare/fare/tisSearch";
   const response = await axios.post(url, data);
+
+  if (response.data.outwardJourneyList) {
+    response.data.outboundJourneyList = response.data.outwardJourneyList;
+  }
 
   return response.data;
 }

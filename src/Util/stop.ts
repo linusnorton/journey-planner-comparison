@@ -5,6 +5,6 @@ export function stopName(stop: Stop): string {
 }
 
 interface Stop {
-  crsCode: string,
+  crsCode?: string,
   nlcCode?: string
 }

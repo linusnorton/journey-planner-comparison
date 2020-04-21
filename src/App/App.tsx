@@ -7,6 +7,7 @@ import { Results } from "./Results/Results";
 import { convertOtrl } from "../Util/otrl";
 
 export function App() {
+  const [firstLoad, setFirstLoad] = useState(true);
   const [results1, setResults1] = useState();
   const [results2, setResults2] = useState();
   const [loading1, setLoading1] = useState(false);
@@ -15,8 +16,27 @@ export function App() {
   const [error2, setError2] = useState(false);
 
   const onSubmit = (form: FormData) => {
+    const params = new URLSearchParams(window.location.search);
+
+    for (const [key, value] of Object.entries(form)) {
+      params.set(key, value);
+    }
+
+    window.history.replaceState({}, "", decodeURIComponent(`${window.location.pathname}?${params}`));
+
     getResults(fetchTrip(form), setLoading1, setError1, setResults1);
     getResults(fetchOtrl(form), setLoading2, setError2, setResults2);
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const origin = urlParams.get("origin");
+  const destination = urlParams.get("destination");
+  const date = urlParams.get("date");
+  const time = urlParams.get("time");
+
+  if (firstLoad && origin && destination && date && time) {
+    setFirstLoad(false);
+    onSubmit({ origin, destination, date, time });
   }
 
   return (

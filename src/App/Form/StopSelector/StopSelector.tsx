@@ -6,10 +6,12 @@ import Autosuggest, {
   SuggestionsFetchRequestedParams
 } from "react-autosuggest";
 import { Stop } from "../../../Data/stops";
+import { stopName } from "../../../Util/stop";
 
-export function StopSelector({ id, stops, onChange }: StopSelectorProps) {
+export function StopSelector({ id, stops, onChange, defaultValue }: StopSelectorProps) {
   const [suggestions, setSuggestions] = useState(stops);
-  const [inputValue, setInputValue] = useState("");
+  const defaultTextInput = defaultValue ? stopName({ nlcCode: defaultValue }) : "";
+  const [inputValue, setInputValue] = useState(defaultTextInput);
   const [highlighted, setHighlighted] = useState();
 
   const onSelectedChange = (event: FormEvent<any>, selected: SuggestionSelectedEventData<Stop>) => {
@@ -85,5 +87,6 @@ export type StopData = Stop[];
 export interface StopSelectorProps {
   id: string,
   stops: StopData,
+  defaultValue: string | null,
   onChange: (value: string) => any
 }

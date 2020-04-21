@@ -5,13 +5,16 @@ import { StopData, StopSelector } from "./StopSelector/StopSelector";
 import "./Form.css";
 
 export function Form({ onSubmit, stops }: FormInputProps) {
-  const [origin, setOrigin] = useState("");
-  const [destination, setDestination] = useState("");
-  const defaultDate = new Date();
-  defaultDate.setMonth(defaultDate.getMonth() + 1);
+  const urlParams = new URLSearchParams(window.location.search);
+  const defaultOrigin = urlParams.get("origin");
+  const defaultDestination = urlParams.get("destination");
+  const defaultDate = urlParams.get("date") ? new Date(urlParams.get("date")!) : onceMonthFromNow();
+  const defaultTime = urlParams.get("time");
 
+  const [origin, setOrigin] = useState(defaultOrigin || "");
+  const [destination, setDestination] = useState(defaultDestination || "");
   const [date, setDate] = useState(defaultDate);
-  const [time, setTime] = useState("14:00");
+  const [time, setTime] = useState(defaultTime || "14:00");
 
   const onChangeOrigin = (value: string) => {
     setOrigin(value);
@@ -43,10 +46,10 @@ export function Form({ onSubmit, stops }: FormInputProps) {
   return (
     <div className="row">
       <div className="col-3 px-0">
-        <StopSelector id="origin" onChange={onChangeOrigin} stops={stops} />
+        <StopSelector id="origin" onChange={onChangeOrigin} stops={stops} defaultValue={defaultOrigin} />
       </div>
       <div className="col-3 pr-0">
-        <StopSelector id="destination" onChange={onChangeDestination} stops={stops} />
+        <StopSelector id="destination" onChange={onChangeDestination} stops={stops} defaultValue={defaultDestination}/>
       </div>
       <div className="col-3 pr-0">
         <input className="form-control" placeholder="date" value={date.toJSON().slice(0, 10)} onChange={onChangeDate} name="date" type="date"/>
@@ -56,6 +59,13 @@ export function Form({ onSubmit, stops }: FormInputProps) {
       </div>
     </div>
   )
+}
+
+function onceMonthFromNow() {
+  const date = new Date();
+  date.setMonth(date.getMonth() + 1);
+
+  return date;
 }
 
 export interface FormInputProps {

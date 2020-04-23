@@ -1,10 +1,10 @@
-import React, { SetStateAction, useState, Dispatch } from 'react';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import './App.css';
-import { Form, FormData } from "./Form/Form";
+import {Form, FormData} from "./Form/Form";
 import axios from "axios";
-import { stops } from "../Data/stops";
-import { Results } from "./Results/Results";
-import { convertOtrl } from "../Util/otrl";
+import {stops} from "../Data/stops";
+import {Results} from "./Results/Results";
+import {convertOtrl} from "../Util/otrl";
 
 export function App() {
   const [firstLoad, setFirstLoad] = useState(true);
@@ -36,7 +36,7 @@ export function App() {
 
   if (firstLoad && origin && destination && date && time) {
     setFirstLoad(false);
-    onSubmit({ origin, destination, date, time });
+    onSubmit({ origin, destination, date, time, adults: 1, children: 0, railcards: "" });
   }
 
   return (
@@ -78,8 +78,8 @@ async function fetchOtrl(form: FormData) {
     "x-access-token": "otrl|a6af56be1691ac2929898c9f68c4b49a0a2d930849770dba976be5d792a"
   };
   const data = {
-    "adults": 1,
-    "children": 0,
+    "adults": form.adults,
+    "children": form.children,
     "destination": form.destination,
     "disableGroupSavings": true,
     "doRealTime": false,
@@ -87,6 +87,7 @@ async function fetchOtrl(form: FormData) {
     "keepAllZoneFares": false,
     "numJourneys": 8,
     "openReturn": false,
+    "railcards": form.railcards ? form.railcards.split(",") : undefined,
     "origin": form.origin,
     "outward": { "arriveDepart": "Depart", "rangeEnd": form.date + "T23:59:59", "rangeStart": form.date + "T" + form.time + ":00"},
     "showCheapest": false
@@ -99,23 +100,23 @@ async function fetchOtrl(form: FormData) {
 
 async function fetchTrip(form: FormData) {
   const data = {
-    "adultCount": 1,
+    "adultCount": form.adults,
     "arrCrsCode": form.destination.length === 3 ? form.destination : "",
     "arrNlcCode": form.destination.length === 4 ? form.destination : "",
-    "childCount": 0,
+    "childCount": form.children,
     "departureDate": form.date + " " + form.time,
     "dptCrsCode": form.origin.length === 3 ? form.origin : "",
     "dptNlcCode": form.origin.length === 4 ? form.origin : "",
     "keepOvertaken": false,
     "maxJourney": -1,
     "openReturn": false,
-    "railCardList": [""],
+    "railCardList": form.railcards.split(","),
     "returnDate": "",
     "showRouteingDetail": false
   };
 
   const urlParams = new URLSearchParams(window.location.search);
-  const url = urlParams.get("tt")
+  const url = urlParams.get("tt") && urlParams.get("tt") !== "false"
     ? "https://cors-anywhere.herokuapp.com/http://apiproxy-fws.ctripqa.com/apiproxy/train/tisuk/fare/fare/journeySearch"
     : "https://cors-anywhere.herokuapp.com/http://apiproxy-fws.ctripqa.com/apiproxy/train/tisuk/fare/fare/tisSearch";
 

@@ -112,9 +112,13 @@ async function fetchTrip(form: FormData) {
     "railCardList": [""],
     "returnDate": "",
     "showRouteingDetail": false
-  }
-  // const url = "https://cors-anywhere.herokuapp.com/http://apiproxy-fws.ctripqa.com/apiproxy/train/tisuk/fare/fare/journeySearch";
-  const url = "https://cors-anywhere.herokuapp.com/http://apiproxy-fws.ctripqa.com/apiproxy/train/tisuk/fare/fare/tisSearch";
+  };
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const url = urlParams.get("tt")
+    ? "https://cors-anywhere.herokuapp.com/http://apiproxy-fws.ctripqa.com/apiproxy/train/tisuk/fare/fare/journeySearch"
+    : "https://cors-anywhere.herokuapp.com/http://apiproxy-fws.ctripqa.com/apiproxy/train/tisuk/fare/fare/tisSearch";
+
   const response = await axios.post(url, data);
 
   if (response.data.outwardJourneyList) {

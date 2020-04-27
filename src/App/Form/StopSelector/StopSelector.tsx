@@ -10,7 +10,8 @@ import { stopName } from "../../../Util/stop";
 
 export function StopSelector({ id, stops, onChange, defaultValue }: StopSelectorProps) {
   const [suggestions, setSuggestions] = useState(stops);
-  const defaultTextInput = defaultValue ? stopName({ nlcCode: defaultValue }) : "";
+  const codeType = defaultValue && defaultValue?.length === 3 ? "crsCode" : "nlcCode";
+  const defaultTextInput = defaultValue ? stopName({ [codeType]: defaultValue }) : "";
   const [inputValue, setInputValue] = useState(defaultTextInput);
   const [highlighted, setHighlighted] = useState();
 

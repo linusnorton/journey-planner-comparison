@@ -116,7 +116,7 @@ export function Form({ onSubmit, stops }: FormInputProps) {
           <input className="form-control" placeholder="time" value={time} onChange={onChangeTime} name="time" type="text"/>
         </div>
         <div className="col-1 pr-0 pt-2">
-          <a href="#" onClick={onExtraOptionsClick}>{ extraOptionsOpen ? " less ^" : "more v" }</a>
+          <a href="#advanced" onClick={onExtraOptionsClick}>{ extraOptionsOpen ? " less ^" : "more v" }</a>
         </div>
       </div>
       { extraOptions }

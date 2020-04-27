@@ -2,7 +2,7 @@ import React, {Dispatch, SetStateAction, useState} from 'react';
 import './App.css';
 import {Form, FormData} from "./Form/Form";
 import axios from "axios";
-import {stops} from "../Data/stops";
+import {stops, stopsByCrs} from "../Data/stops";
 import {Results} from "./Results/Results";
 import {convertOtrl} from "../Util/otrl";
 
@@ -77,10 +77,14 @@ async function fetchOtrl(form: FormData) {
   const headers = {
     "x-access-token": "otrl|a6af56be1691ac2929898c9f68c4b49a0a2d930849770dba976be5d792a"
   };
+
+  const origin = form.origin.length === 4 ? form.origin : stopsByCrs[form.origin].code;
+  const destination = form.destination.length === 4 ? form.destination : stopsByCrs[form.destination].code;
+
   const data = {
     "adults": form.adults,
     "children": form.children,
-    "destination": form.destination,
+    "destination": destination,
     "disableGroupSavings": true,
     "doRealTime": false,
     "filterFares": true,
@@ -88,7 +92,7 @@ async function fetchOtrl(form: FormData) {
     "numJourneys": 8,
     "openReturn": false,
     "railcards": form.railcards ? form.railcards.split(",") : undefined,
-    "origin": form.origin,
+    "origin": origin,
     "outward": { "arriveDepart": "Depart", "rangeEnd": form.date + "T23:59:59", "rangeStart": form.date + "T" + form.time + ":00"},
     "showCheapest": false
   };

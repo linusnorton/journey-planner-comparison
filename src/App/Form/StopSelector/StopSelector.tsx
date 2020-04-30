@@ -24,7 +24,7 @@ export function StopSelector({ id, stops, onChange, defaultValue }: StopSelector
     setInputValue(newValue);
   };
 
-  const onBlur = (event: React.FocusEvent<any>, params?: Autosuggest.BlurEvent<Stop>) => {
+  const onBlur = () => {
     if (highlighted) {
       onChange(highlighted.code);
       setInputValue(highlighted.name);

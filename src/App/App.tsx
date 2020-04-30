@@ -103,6 +103,12 @@ async function fetchOtrl(form: FormData) {
 }
 
 async function fetchTrip(form: FormData) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const isTimetableOnly = urlParams.get("tt") && urlParams.get("tt") !== "false";
+  const url = isTimetableOnly
+      ? "https://cors-anywhere.herokuapp.com/http://apiproxy-fws.ctripqa.com/apiproxy/train/tisuk/fare/fare/journeySearch"
+      : "https://cors-anywhere.herokuapp.com/http://apiproxy-fws.ctripqa.com/apiproxy/train/tisuk/fare/fare/tisSearch";
+
   const data = {
     "adultCount": form.adults,
     "arrCrsCode": form.destination.length === 3 ? form.destination : "",
@@ -112,23 +118,16 @@ async function fetchTrip(form: FormData) {
     "dptCrsCode": form.origin.length === 3 ? form.origin : "",
     "dptNlcCode": form.origin.length === 4 ? form.origin : "",
     "keepOvertaken": false,
-    "maxJourney": -1,
+    "maxJourney": isTimetableOnly ? 100 : -1,
     "openReturn": false,
     "railCardList": form.railcards.split(","),
     "returnDate": "",
     "showRouteingDetail": false
   };
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const url = urlParams.get("tt") && urlParams.get("tt") !== "false"
-    ? "https://cors-anywhere.herokuapp.com/http://apiproxy-fws.ctripqa.com/apiproxy/train/tisuk/fare/fare/journeySearch"
-    : "https://cors-anywhere.herokuapp.com/http://apiproxy-fws.ctripqa.com/apiproxy/train/tisuk/fare/fare/tisSearch";
-
   const response = await axios.post(url, data);
 
-  if (response.data.outwardJourneyList) {
-    response.data.outboundJourneyList = response.data.outwardJourneyList;
-  }
+  response.data.outboundJourneyList = response.data.outboundJourneyList.slice(0, 8);
 
   return response.data;
 }

@@ -8,7 +8,7 @@ export function Results({ results, loading, error }: FormResultsProps) {
   const loadingMessage = loading && <p>Loading</p>;
   const journeys = !results || !results.outboundJourneyList || results.outboundJourneyList.length === 0
     ? <p>No results</p>
-    : renderResults(results.outboundJourneyList.slice(0, 8));
+    : renderResults(results.outboundJourneyList);
 
   const content = errorMessage || loadingMessage || journeys;
 

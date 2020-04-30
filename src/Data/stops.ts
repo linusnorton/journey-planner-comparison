@@ -52,7 +52,7 @@ export const stops: Stop[] = [
   {
     "code": "0254",
     "name": "Colchester Stations",
-  "crs": ""
+    "crs": ""
   },
   {
     "code": "0449",
@@ -236,7 +236,7 @@ export const stops: Stop[] = [
   },
   {
     "code": "0035",
-    "name": "All Zones",
+    "name": "London All Zones Travelcard",
     "crs": ""
   },
   {
@@ -382,86 +382,6 @@ export const stops: Stop[] = [
   {
     "code": "0072",
     "name": "Boundary Zone 6",
-    "crs": ""
-  },
-  {
-    "code": "0078",
-    "name": "Strathc Zone 2",
-    "crs": ""
-  },
-  {
-    "code": "0079",
-    "name": "Strathc Zone 3",
-    "crs": ""
-  },
-  {
-    "code": "0080",
-    "name": "Strathc Zone 4",
-    "crs": ""
-  },
-  {
-    "code": "0081",
-    "name": "Strathc Zone 5",
-    "crs": ""
-  },
-  {
-    "code": "0082",
-    "name": "Strathc Zone 6",
-    "crs": ""
-  },
-  {
-    "code": "0083",
-    "name": "Strathc Zone 7",
-    "crs": ""
-  },
-  {
-    "code": "0084",
-    "name": "Strathc Zone 8",
-    "crs": ""
-  },
-  {
-    "code": "0085",
-    "name": "Strathc Zone All",
-    "crs": ""
-  },
-  {
-    "code": "0095",
-    "name": "Strathc Zone 9",
-    "crs": ""
-  },
-  {
-    "code": "0096",
-    "name": "Strathc Zone 10",
-    "crs": ""
-  },
-  {
-    "code": "0097",
-    "name": "Strathc Zone 11",
-    "crs": ""
-  },
-  {
-    "code": "0098",
-    "name": "Strathc Zone 12",
-    "crs": ""
-  },
-  {
-    "code": "0099",
-    "name": "Zone 9 Nine Juv",
-    "crs": ""
-  },
-  {
-    "code": "0101",
-    "name": "Zone 10 Ten Juv",
-    "crs": ""
-  },
-  {
-    "code": "0102",
-    "name": "Zone 11 Elev Juv",
-    "crs": ""
-  },
-  {
-    "code": "0103",
-    "name": "Zone 12 Twlv Juv",
     "crs": ""
   },
   {

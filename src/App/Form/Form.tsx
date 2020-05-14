@@ -9,65 +9,85 @@ export function Form({ onSubmit, stops }: FormInputProps) {
   const urlParams = new URLSearchParams(window.location.search);
   const defaultOrigin = urlParams.get("origin");
   const defaultDestination = urlParams.get("destination");
-  const defaultDate = urlParams.get("date") ? new Date(urlParams.get("date")!) : onceMonthFromNow();
-  const defaultTime = urlParams.get("time");
+  const defaultDate = urlParams.get("outwardDate") ? new Date(urlParams.get("outwardDate")!) : oneMonthFromNow();
+  const defaultTime = urlParams.get("outwardTime");
+  const defaultReturnDate = urlParams.get("returnDate") ? new Date(urlParams.get("returnDate")!) : null;
+  const defaultReturnTime = urlParams.get("returnTime");
 
   const [origin, setOrigin] = useState(defaultOrigin || "");
   const [destination, setDestination] = useState(defaultDestination || "");
-  const [date, setDate] = useState(defaultDate);
-  const [time, setTime] = useState(defaultTime || "14:00");
+  const [outwardDate, setOutwardDate] = useState(defaultDate);
+  const [outwardTime, setOutwardTime] = useState(defaultTime || "14:00");
+  const [returnDate, setReturnDate] = useState(defaultReturnDate);
+  const [returnTime, setReturnTime] = useState(defaultReturnTime || "");
   const [extraOptionsOpen, setExtraOptionsOpen] = useState(false);
-  const [numAdults, setNumAdults] = useState(+(urlParams.get("adults") || 1));
-  const [numChildren, setNumChildren] = useState(+(urlParams.get("children") || 0));
+  const [adults, setAdults] = useState(+(urlParams.get("adults") || 1));
+  const [children, setChildren] = useState(+(urlParams.get("children") || 0));
   const [railcard, setRailcard] = useState(urlParams.get("railcard") || "");
+
+  const currentValues =  {
+    origin,
+    destination,
+    outwardDate: outwardDate.toISOString().substr(0, 10),
+    outwardTime,
+    returnDate: returnDate ? returnDate.toISOString().substr(0, 10) : "",
+    returnTime,
+    adults,
+    children,
+    railcards: railcard
+  }
 
   const onChangeOrigin = (value: string) => {
     setOrigin(value);
-    detectFormComplete(value, destination, date, time, numAdults, numChildren, railcard);
+    detectFormComplete({ origin: value });
   }
 
   const onChangeDestination = (value: string) => {
     setDestination(value);
-    detectFormComplete(origin, value, date, time, numAdults, numChildren, railcard);
+    detectFormComplete({ destination: value });
   }
 
-  const onChangeDate = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChangeOutwardDate = (e: ChangeEvent<HTMLInputElement>) => {
     const d = new Date(e.target.value)
-    setDate(d);
-    detectFormComplete(origin, destination, d, time, numAdults, numChildren, railcard);
+    setOutwardDate(d);
+    detectFormComplete({ outwardDate: d.toISOString().substr(0, 10) });
   }
 
-  const onChangeTime = (e: ChangeEvent<HTMLInputElement>) => {
-    setTime(e.target.value);
-    detectFormComplete(origin, destination, date, e.target.value, numAdults, numChildren, railcard);
+  const onChangeOutwardTime = (e: ChangeEvent<HTMLInputElement>) => {
+    setOutwardTime(e.target.value);
+    detectFormComplete({ outwardTime: e.target.value });
+  }
+
+  const onChangeReturnDate = (e: ChangeEvent<HTMLInputElement>) => {
+    const d = new Date(e.target.value)
+    setReturnDate(d);
+    detectFormComplete({ returnDate: d.toISOString().substr(0, 10) });
+  }
+
+  const onChangeReturnTime = (e: ChangeEvent<HTMLInputElement>) => {
+    setReturnTime(e.target.value);
+    detectFormComplete({ returnTime: e.target.value });
   }
 
   const onNumAdultsChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setNumAdults(+e.target.value);
-    detectFormComplete(origin, destination, date, time, +e.target.value, numChildren, railcard);
+    setAdults(+e.target.value);
+    detectFormComplete({ adults: +e.target.value });
   }
 
   const onNumChildrenChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setNumChildren(+e.target.value);
-    detectFormComplete(origin, destination, date, time, numAdults, +e.target.value, railcard);
+    setChildren(+e.target.value);
+    detectFormComplete({ children: +e.target.value });
   }
 
   const onRailcardChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setRailcard(e.target.value);
-    detectFormComplete(origin, destination, date, time, numAdults, numChildren, e.target.value);
+    detectFormComplete({ railcards: e.target.value });
   }
 
-  const detectFormComplete = (o: string, d: string, dt: Date, t: string, na: number, nc: number, rc: string) => {
-    if (o.length > 2 && d.length > 2 && t.length === 5) {
-      onSubmit({
-        origin: o,
-        destination: d ,
-        time: t,
-        date: dt.toISOString().substr(0, 10),
-        adults: na,
-        children: nc,
-        railcards: rc
-      });
+  const detectFormComplete = (change: Partial<FormData>) => {
+    const formData = { ...currentValues, ...change } as FormData;
+    if (formData.origin.length > 2 && formData.destination.length > 2 && formData.outwardTime.length === 5) {
+      onSubmit(formData);
     }
   }
 
@@ -81,23 +101,36 @@ export function Form({ onSubmit, stops }: FormInputProps) {
       <label htmlFor="adults">
         Adults
       </label>
-      <input id="adults" className="form-control" placeholder="adults" value={numAdults} onChange={onNumAdultsChange} name="adults" type="number"/>
+      <input id="adults" className="form-control" placeholder="adults" value={adults} onChange={onNumAdultsChange} name="adults" type="number"/>
     </div>
     <div className="col-1 pr-0">
       <label htmlFor="children">
         Children
       </label>
-      <input id="children" className="form-control" placeholder="children" value={numChildren} onChange={onNumChildrenChange} name="children" type="number"/>
+      <input id="children" className="form-control" placeholder="children" value={children} onChange={onNumChildrenChange} name="children" type="number"/>
     </div>
     <div className="col-3 pr-0">
       <label htmlFor="railcard">
         Railcard
       </label>
       <select id="railcard" className="form-control" placeholder="railcard" name="railcard" onChange={onRailcardChange}>
-        <option value="">None</option>
-        { railcards.map(r => <option id={r.value} value={r.value}>{r.label}</option> )}
+        <option key="public" value="">None</option>
+        { railcards.map(r => <option key={r.value} value={r.value}>{r.label}</option> )}
       </select>
     </div>
+    <div className="col-3 pr-0">
+      <label htmlFor="returnDate">
+        Return Date
+      </label>
+      <input id="returnDate" className="form-control" placeholder="date" value={currentValues.returnDate} onChange={onChangeReturnDate} name="returnDate" type="date"/>
+    </div>
+    <div className="col-2 pr-0">
+      <label htmlFor="returnTime">
+        Return Time
+      </label>
+      <input id="returnTime" className="form-control" placeholder="time" value={returnTime} onChange={onChangeReturnTime} name="returnTime" type="text"/>
+    </div>
+
   </div>;
 
   return (
@@ -110,10 +143,10 @@ export function Form({ onSubmit, stops }: FormInputProps) {
           <StopSelector id="destination" onChange={onChangeDestination} stops={stops} defaultValue={defaultDestination}/>
         </div>
         <div className="col-3 pr-0">
-          <input className="form-control" placeholder="date" value={date.toJSON().slice(0, 10)} onChange={onChangeDate} name="date" type="date"/>
+          <input className="form-control" placeholder="date" value={outwardDate.toJSON().slice(0, 10)} onChange={onChangeOutwardDate} name="date" type="date"/>
         </div>
         <div className="col-2 pr-0">
-          <input className="form-control" placeholder="time" value={time} onChange={onChangeTime} name="time" type="text"/>
+          <input className="form-control" placeholder="time" value={outwardTime} onChange={onChangeOutwardTime} name="time" type="text"/>
         </div>
         <div className="col-1 pr-0 pt-2">
           <a href="#advanced" onClick={onExtraOptionsClick}>{ extraOptionsOpen ? " less ^" : "more v" }</a>
@@ -124,7 +157,7 @@ export function Form({ onSubmit, stops }: FormInputProps) {
   )
 }
 
-function onceMonthFromNow() {
+function oneMonthFromNow() {
   const date = new Date();
   date.setMonth(date.getMonth() + 1);
 
@@ -139,8 +172,10 @@ export interface FormInputProps {
 export interface FormData {
   origin: string,
   destination: string,
-  date: string,
-  time: string,
+  outwardDate: string,
+  outwardTime: string,
+  returnDate: string,
+  returnTime: string,
   adults: number,
   children: number,
   railcards: string

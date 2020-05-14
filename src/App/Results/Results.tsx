@@ -6,9 +6,11 @@ import "./Results.css";
 export function Results({ results, loading, error }: FormResultsProps) {
   const errorMessage = error && <p>Error</p>;
   const loadingMessage = loading && <p>Loading</p>;
-  const journeys = !results || !results.outboundJourneyList || results.outboundJourneyList.length === 0
+  const outwardResults = results && results.outboundJourneyList && results.outboundJourneyList.length > 0 && renderResults(results.outboundJourneyList);
+  const inwardResults = results && results.inboundJourneyList && results.inboundJourneyList.length > 0 && renderResults(results.inboundJourneyList);
+  const journeys = !outwardResults
     ? <p>No results</p>
-    : renderResults(results.outboundJourneyList);
+    : <>{outwardResults} {inwardResults}</>;
 
   const content = errorMessage || loadingMessage || journeys;
 
@@ -37,7 +39,8 @@ function renderResults(journeys: Journey[]) {
 
 export interface FormResultsProps {
   results?: {
-    outboundJourneyList: Journey[]
+    outboundJourneyList: Journey[],
+    inboundJourneyList: Journey[],
   },
   loading: boolean,
   error: boolean

@@ -4,8 +4,11 @@ import { Leg } from "../App/Results/JourneyResult/LegResult/LegResult";
 export function convertOtrl(response: any) {
   return {
     outboundJourneyList: response.result.outward
-    .map((j: any) => convertJourney(j, response.links))
-    .sort((a: Journey, b: Journey) => a.departureDateTime > b.departureDateTime ? 1 : -1)
+      .map((j: any) => convertJourney(j, response.links))
+      .sort((a: Journey, b: Journey) => a.departureDateTime > b.departureDateTime ? 1 : -1),
+    inboundJourneyList: response.result.return
+        .map((j: any) => convertJourney(j, response.links))
+        .sort((a: Journey, b: Journey) => a.departureDateTime > b.departureDateTime ? 1 : -1)
   };
 }
 

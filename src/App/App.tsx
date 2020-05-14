@@ -1,7 +1,7 @@
 import React, {Dispatch, SetStateAction, useState} from 'react';
 import './App.css';
 import {Form, FormData} from "./Form/Form";
-import axios from "axios";
+import axios, {CancelTokenSource} from "axios";
 import {stops, stopsByCrs} from "../Data/stops";
 import {Results} from "./Results/Results";
 import {convertOtrl} from "../Util/otrl";
@@ -31,12 +31,17 @@ export function App() {
   const urlParams = new URLSearchParams(window.location.search);
   const origin = urlParams.get("origin");
   const destination = urlParams.get("destination");
-  const date = urlParams.get("date");
-  const time = urlParams.get("time");
+  const outwardDate = urlParams.get("outwardDate");
+  const outwardTime = urlParams.get("outwardTime");
+  const adults = +(urlParams.get("adults") || 1);
+  const children = +(urlParams.get("children") || 0);
+  const railcards = urlParams.get("railcards") || "";
+  const returnDate = urlParams.get("returnDate") || "";
+  const returnTime = urlParams.get("returnTime") || "";
 
-  if (firstLoad && origin && destination && date && time) {
+  if (firstLoad && origin && destination && outwardDate && outwardTime) {
     setFirstLoad(false);
-    onSubmit({ origin, destination, date, time, adults: 1, children: 0, railcards: "" });
+    onSubmit({ origin, destination, outwardDate, outwardTime, adults, children, railcards, returnDate, returnTime });
   }
 
   return (
@@ -72,6 +77,7 @@ async function getResults(query: Promise<any>, setLoading: Setter<boolean>, setE
   }
 }
 
+let otrlSource: CancelTokenSource | undefined;
 async function fetchOtrl(form: FormData) {
   const url = "https://cors-anywhere.herokuapp.com/https://api.southernrailway.com/jp/journey-plan";
   const headers = {
@@ -93,14 +99,24 @@ async function fetchOtrl(form: FormData) {
     "openReturn": false,
     "railcards": form.railcards ? form.railcards.split(",") : undefined,
     "origin": origin,
-    "outward": { "arriveDepart": "Depart", "rangeEnd": form.date + "T23:59:59", "rangeStart": form.date + "T" + form.time + ":00"},
+    "outward": { "arriveDepart": "Depart", "rangeEnd": form.outwardDate + "T23:59:59", "rangeStart": form.outwardDate + "T" + form.outwardTime + ":00"},
+    "return": form.returnDate && form.returnTime
+        ? { "arriveDepart": "Depart", "rangeEnd": form.returnDate + "T23:59:59", "rangeStart": form.returnDate + "T" + form.returnTime + ":00"}
+        : undefined,
     "showCheapest": false
   };
 
-  const response = await axios.post(url, data, { headers });
+  if (otrlSource) {
+    otrlSource.cancel('Another request');
+  }
+
+  otrlSource = axios.CancelToken.source()
+  const response = await axios.post(url, data, { headers, cancelToken: otrlSource.token });
 
   return convertOtrl(response.data);
 }
+
+let cTripSource: CancelTokenSource | undefined;
 
 async function fetchTrip(form: FormData) {
   const urlParams = new URLSearchParams(window.location.search);
@@ -114,20 +130,27 @@ async function fetchTrip(form: FormData) {
     "arrCrsCode": form.destination.length === 3 ? form.destination : "",
     "arrNlcCode": form.destination.length === 4 ? form.destination : "",
     "childCount": form.children,
-    "departureDate": form.date + " " + form.time,
+    "departureDate": form.outwardDate + " " + form.outwardTime,
     "dptCrsCode": form.origin.length === 3 ? form.origin : "",
     "dptNlcCode": form.origin.length === 4 ? form.origin : "",
     "keepOvertaken": false,
     "maxJourney": isTimetableOnly ? 100 : -1,
     "openReturn": false,
     "railCardList": form.railcards.split(","),
-    "returnDate": "",
+    "returnDate": form.returnDate && form.returnTime ? form.returnDate + " " + form.returnTime : "",
     "showRouteingDetail": false
   };
 
-  const response = await axios.post(url, data);
+  if (cTripSource) {
+    cTripSource.cancel('Another request');
+  }
+
+  cTripSource = axios.CancelToken.source()
+
+  const response = await axios.post(url, data, { cancelToken: cTripSource.token });
 
   response.data.outboundJourneyList = response.data.outboundJourneyList.slice(0, 8);
+  response.data.inboundJourneyList = response.data.inboundJourneyList.slice(0, 8);
 
   return response.data;
 }

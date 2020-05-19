@@ -72,8 +72,10 @@ async function getResults(query: Promise<any>, setLoading: Setter<boolean>, setE
     setResults(results);
     setLoading(false);
   } catch (e) {
-    console.error(e);
-    setError(true)
+    if (!axios.isCancel(e)) {
+      console.error(e);
+      setError(true)
+    }
   }
 }
 
@@ -150,7 +152,7 @@ async function fetchTrip(form: FormData) {
   const response = await axios.post(url, data, { cancelToken: cTripSource.token });
 
   response.data.outboundJourneyList = response.data.outboundJourneyList.slice(0, 8);
-  response.data.inboundJourneyList = response.data.inboundJourneyList.slice(0, 8);
+  response.data.inboundJourneyList = response.data.inboundJourneyList?.slice(0, 8);
 
   return response.data;
 }

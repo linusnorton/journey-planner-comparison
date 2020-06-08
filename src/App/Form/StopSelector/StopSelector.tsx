@@ -13,7 +13,7 @@ export function StopSelector({ id, stops, onChange, defaultValue }: StopSelector
   const codeType = defaultValue && defaultValue?.length === 3 ? "crsCode" : "nlcCode";
   const defaultTextInput = defaultValue ? stopName({ [codeType]: defaultValue }) : "";
   const [inputValue, setInputValue] = useState(defaultTextInput);
-  const [highlighted, setHighlighted] = useState();
+  const [highlighted, setHighlighted] = useState(undefined as Stop | undefined);
 
   const onSelectedChange = (event: FormEvent<any>, selected: SuggestionSelectedEventData<Stop>) => {
     setHighlighted(undefined);

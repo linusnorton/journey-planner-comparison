@@ -74,7 +74,7 @@ async function getResults(query: Promise<any>, setLoading: Setter<boolean>, setE
   } catch (e) {
     if (!axios.isCancel(e)) {
       console.error(e);
-      setError(true)
+      setError(true);
     }
   }
 }
@@ -132,14 +132,14 @@ async function fetchTrip(form: FormData) {
     "arrCrsCode": form.destination.length === 3 ? form.destination : "",
     "arrNlcCode": form.destination.length === 4 ? form.destination : "",
     "childCount": form.children,
-    "departureDate": form.outwardDate + " " + form.outwardTime,
+    "departureDateTime": form.outwardDate + " " + form.outwardTime,
     "dptCrsCode": form.origin.length === 3 ? form.origin : "",
     "dptNlcCode": form.origin.length === 4 ? form.origin : "",
     "keepOvertaken": false,
     "maxJourney": isTimetableOnly ? 100 : -1,
     "openReturn": false,
     "railCardList": form.railcards.split(","),
-    "returnDate": form.returnDate && form.returnTime ? form.returnDate + " " + form.returnTime : "",
+    "returnDepartureDateTime": form.returnDate && form.returnTime ? form.returnDate + " " + form.returnTime : "",
     "showRouteingDetail": false
   };
 
